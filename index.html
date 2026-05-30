@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gully Outlaws – Rule the Streets</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Bebas+Neue&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --saffron:       #FF6B00;
+      --deep-orange:   #E84700;
+      --turmeric:      #F5A623;
+      --marigold:      #FFB830;
+      --chili:         #C0392B;
+      --chai-brown:    #5C2E00;
+      --midnight:      #0D0700;
+      --ink:           #1A0A00;
+      --cream:         #FFF3E0;
+      --henna:         #8B2500;
+      --paan-green:    #1B4D2E;
+      --steel-blue:    #1C3A5E;
+
+      --font-display:  'Bebas Neue', sans-serif;
+      --font-body:     'Poppins', sans-serif;
+      --font-deva:     'Tiro Devanagari Hindi', serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--midnight);
+      color: var(--cream);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ─────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: .5;
+    }
+
+    /* ── NAV ───────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 60px;
+      background: linear-gradient(180deg, rgba(13,7,0,.95) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(255,107,0,.15);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 2rem; letter-spacing: 3px;
+      color: var(--saffron);
+      text-shadow: 0 0 30px rgba(255,107,0,.6);
+    }
+    .nav-logo span { color: var(--marigold); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      color: var(--cream); text-decoration: none;
+      font-size: .85rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--marigold); }
+
+    /* ── HERO ──────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: grid; place-items: center; text-align: center;
+      position: relative; overflow: hidden;
+      padding: 120px 20px 60px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232,71,0,.22) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(192,57,43,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 80%, rgba(245,166,35,.12) 0%, transparent 60%),
+        #0D0700;
+    }
+    /* decorative diagonal lines */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 60px,
+        rgba(255,107,0,.03) 60px,
+        rgba(255,107,0,.03) 61px
+      );
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .hero-eyebrow {
+      display: inline-block;
+      font-family: var(--font-deva); font-size: 1rem;
+      color: var(--marigold); letter-spacing: 6px;
+      border: 1px solid rgba(255,184,48,.3);
+      padding: 6px 20px; border-radius: 2px;
+      margin-bottom: 28px;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 14vw, 12rem);
+      line-height: .88; letter-spacing: 4px;
+      color: var(--saffron);
+      text-shadow:
+        0 0 60px rgba(255,107,0,.5),
+        0 4px 0 var(--henna),
+        0 8px 0 rgba(0,0,0,.5);
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero-title .line2 { color: var(--cream); display: block; }
+    .hero-subtitle {
+      margin-top: 28px; font-size: 1.1rem; font-weight: 400;
+      color: rgba(255,243,224,.7); letter-spacing: 1px; max-width: 560px;
+      margin-left: auto; margin-right: auto;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .hero-cta-group {
+      margin-top: 48px; display: flex; gap: 20px; justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp .8s .45s ease both;
+    }
+    .btn-primary {
+      background: var(--saffron);
+      color: var(--midnight); font-family: var(--font-display);
+      font-size: 1.1rem; letter-spacing: 3px; padding: 16px 44px;
+      border: none; cursor: pointer; border-radius: 2px;
+      box-shadow: 0 0 40px rgba(255,107,0,.5), inset 0 1px 0 rgba(255,255,255,.2);
+      transition: transform .15s, box-shadow .15s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(255,107,0,.7), inset 0 1px 0 rgba(255,255,255,.2);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--cream); font-family: var(--font-display);
+      font-size: 1.1rem; letter-spacing: 3px; padding: 16px 44px;
+      border: 1px solid rgba(255,243,224,.3); cursor: pointer; border-radius: 2px;
+      transition: border-color .2s, color .2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-secondary:hover { border-color: var(--marigold); color: var(--marigold); }
+
+    /* floating badges */
+    .hero-badges {
+      margin-top: 64px; display: flex; gap: 32px; justify-content: center;
+      flex-wrap: wrap; opacity: .75;
+      animation: fadeUp .8s .6s ease both;
+    }
+    .badge {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .78rem; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--marigold);
+    }
+    .badge::before {
+      content: '◆'; font-size: .5rem; color: var(--saffron);
+    }
+
+    /* scroll cue */
+    .scroll-cue {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: .5; animation: bounce 2s infinite;
+    }
+    .scroll-cue span { font-size: .65rem; letter-spacing: 3px; text-transform: uppercase; }
+    .scroll-cue::after {
+      content: '▼'; font-size: .7rem; color: var(--saffron);
+    }
+
+    /* ── SECTION COMMONS ───────────────────────── */
+    section { padding: 100px 60px; position: relative; }
+    .section-label {
+      font-family: var(--font-deva); font-size: .85rem;
+      color: var(--saffron); letter-spacing: 5px; text-transform: uppercase;
+      margin-bottom: 14px; display: block;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1; color: var(--cream);
+      margin-bottom: 20px;
+    }
+    .section-title span { color: var(--saffron); }
+    .divider {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--saffron), transparent);
+      margin-bottom: 48px;
+    }
+
+    /* ── ABOUT ─────────────────────────────────── */
+    #about {
+      background: var(--ink);
+      border-top: 1px solid rgba(255,107,0,.1);
+      border-bottom: 1px solid rgba(255,107,0,.1);
+    }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center; max-width: 1200px; margin: 0 auto;
+    }
+    .about-text p {
+      font-size: 1rem; line-height: 1.9; color: rgba(255,243,224,.8);
+      margin-bottom: 20px;
+    }
+    .about-text p strong { color: var(--marigold); }
+    .about-features { display: flex; flex-direction: column; gap: 20px; margin-top: 36px; }
+    .feature-row {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 18px; border-left: 3px solid var(--saffron);
+      background: rgba(255,107,0,.05);
+    }
+    .feature-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .feature-row h4 { font-size: .9rem; letter-spacing: 1px; color: var(--marigold); margin-bottom: 4px; }
+    .feature-row p { font-size: .85rem; color: rgba(255,243,224,.65); }
+    .about-visual {
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .about-art {
+      width: 100%; aspect-ratio: 1;
+      max-width: 460px;
+      background: linear-gradient(135deg, rgba(255,107,0,.12), rgba(192,57,43,.08));
+      border: 1px solid rgba(255,107,0,.2);
+      border-radius: 4px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      position: relative; overflow: hidden;
+    }
+    .about-art::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 30px,
+        rgba(255,107,0,.04) 30px, rgba(255,107,0,.04) 31px
+      );
+    }
+    .art-glyph {
+      font-family: var(--font-deva); font-size: 9rem;
+      color: var(--saffron); opacity: .15;
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      user-select: none;
+    }
+    .art-label {
+      position: relative; z-index: 2;
+      font-family: var(--font-display); font-size: 2.4rem;
+      letter-spacing: 6px; color: var(--saffron);
+      text-shadow: 0 0 40px rgba(255,107,0,.6);
+    }
+    .art-sub {
+      position: relative; z-index: 2;
+      font-size: .75rem; letter-spacing: 4px; color: rgba(255,243,224,.4);
+    }
+    .corner-ornament {
+      position: absolute; font-size: 1.2rem; color: rgba(255,107,0,.3);
+    }
+    .corner-ornament.tl { top: 12px; left: 12px; }
+    .corner-ornament.tr { top: 12px; right: 12px; transform: scaleX(-1); }
+    .corner-ornament.bl { bottom: 12px; left: 12px; transform: scaleY(-1); }
+    .corner-ornament.br { bottom: 12px; right: 12px; transform: scale(-1); }
+
+    /* ── SCREENSHOTS ───────────────────────────── */
+    #screenshots { background: var(--midnight); }
+    .screenshots-header { max-width: 1200px; margin: 0 auto 64px; }
+    .screenshots-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .shot-card {
+      position: relative; border-radius: 4px; overflow: hidden;
+      border: 1px solid rgba(255,107,0,.15);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+    .shot-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(255,107,0,.25);
+    }
+    .shot-card:nth-child(1) { grid-column: 1 / 3; }
+    .shot-card:nth-child(4) { grid-column: 2 / 4; }
+
+    .shot-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--ink);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px;
+      position: relative; overflow: hidden;
+    }
+    /* unique gradient per card */
+    .shot-card:nth-child(1) .shot-placeholder {
+      background: linear-gradient(135deg, #1a0a00 0%, #3d1a00 40%, #1a0800 100%);
+    }
+    .shot-card:nth-child(2) .shot-placeholder {
+      background: linear-gradient(135deg, #0d1a0a 0%, #1b3a14 50%, #0d1200 100%);
+    }
+    .shot-card:nth-child(3) .shot-placeholder {
+      background: linear-gradient(135deg, #0a0d1a 0%, #1c2d5e 50%, #0a0f1a 100%);
+    }
+    .shot-card:nth-child(4) .shot-placeholder {
+      background: linear-gradient(135deg, #1a0808 0%, #4a1010 50%, #1a0500 100%);
+    }
+    .shot-card:nth-child(5) .shot-placeholder {
+      background: linear-gradient(135deg, #1a1000 0%, #4d3200 50%, #1a0c00 100%);
+    }
+    .shot-card:nth-child(6) .shot-placeholder {
+      background: linear-gradient(135deg, #0a1a1a 0%, #0d3d3d 50%, #0a1515 100%);
+    }
+
+    .placeholder-icon { font-size: 3.5rem; opacity: .4; }
+    .placeholder-label {
+      font-family: var(--font-display); font-size: 1rem; letter-spacing: 3px;
+      color: rgba(255,243,224,.3); text-transform: uppercase;
+    }
+    .placeholder-sub { font-size: .7rem; color: rgba(255,243,224,.2); letter-spacing: 1.5px; }
+
+    /* "REPLACE" badge */
+    .replace-badge {
+      position: absolute; top: 14px; right: 14px;
+      background: rgba(255,107,0,.9); color: var(--midnight);
+      font-size: .6rem; font-weight: 700; letter-spacing: 2px;
+      padding: 4px 10px; border-radius: 2px; text-transform: uppercase;
+    }
+
+    .shot-info {
+      padding: 20px 22px 22px;
+      background: linear-gradient(180deg, rgba(26,10,0,.9) 0%, rgba(13,7,0,1) 100%);
+      border-top: 1px solid rgba(255,107,0,.1);
+    }
+    .shot-num {
+      font-size: .65rem; letter-spacing: 3px; color: var(--saffron);
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .shot-title {
+      font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 2px;
+      color: var(--cream); margin-bottom: 8px;
+    }
+    .shot-desc { font-size: .82rem; line-height: 1.7; color: rgba(255,243,224,.6); }
+    .shot-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .shot-tag {
+      font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase;
+      border: 1px solid rgba(255,107,0,.3); color: var(--saffron);
+      padding: 3px 10px; border-radius: 2px;
+    }
+
+    /* how-to section inside screenshots */
+    .github-guide {
+      max-width: 900px; margin: 80px auto 0;
+      background: rgba(255,107,0,.05);
+      border: 1px solid rgba(255,107,0,.2);
+      border-radius: 4px; padding: 48px;
+    }
+    .github-guide h3 {
+      font-family: var(--font-display); font-size: 2rem; letter-spacing: 2px;
+      color: var(--marigold); margin-bottom: 6px;
+    }
+    .github-guide .guide-sub {
+      font-size: .85rem; color: rgba(255,243,224,.5); margin-bottom: 32px;
+      letter-spacing: 1px;
+    }
+    .steps { display: flex; flex-direction: column; gap: 20px; }
+    .step {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 18px; background: rgba(255,107,0,.04);
+      border-left: 3px solid var(--saffron);
+    }
+    .step-num {
+      font-family: var(--font-display); font-size: 2.5rem; line-height: 1;
+      color: var(--saffron); flex-shrink: 0; opacity: .5; min-width: 40px;
+    }
+    .step-body h4 { font-size: .9rem; letter-spacing: 1px; color: var(--cream); margin-bottom: 6px; }
+    .step-body p { font-size: .83rem; line-height: 1.7; color: rgba(255,243,224,.6); }
+    .step-body code {
+      display: inline-block; margin-top: 8px;
+      background: rgba(255,107,0,.1); border: 1px solid rgba(255,107,0,.25);
+      color: var(--marigold); padding: 6px 14px;
+      font-size: .78rem; border-radius: 2px; font-family: monospace;
+      line-height: 1.6; white-space: pre-wrap;
+    }
+
+    /* ── FEATURES ──────────────────────────────── */
+    #features {
+      background: var(--ink);
+      border-top: 1px solid rgba(255,107,0,.1);
+    }
+    .features-header { max-width: 1200px; margin: 0 auto 64px; }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .feat-tile {
+      padding: 44px 36px;
+      background: rgba(255,107,0,.03);
+      border: 1px solid rgba(255,107,0,.08);
+      transition: background .2s;
+      position: relative; overflow: hidden;
+    }
+    .feat-tile::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--saffron), transparent);
+      opacity: 0; transition: opacity .2s;
+    }
+    .feat-tile:hover { background: rgba(255,107,0,.06); }
+    .feat-tile:hover::before { opacity: 1; }
+    .feat-emoji { font-size: 2.2rem; margin-bottom: 18px; display: block; }
+    .feat-tile h3 {
+      font-family: var(--font-display); font-size: 1.4rem;
+      letter-spacing: 2px; color: var(--cream); margin-bottom: 12px;
+    }
+    .feat-tile p { font-size: .85rem; line-height: 1.8; color: rgba(255,243,224,.6); }
+    .feat-tile .feat-num {
+      position: absolute; bottom: 16px; right: 20px;
+      font-family: var(--font-display); font-size: 3.5rem;
+      color: rgba(255,107,0,.06); line-height: 1;
+    }
+
+    /* ── FOOTER ────────────────────────────────── */
+    footer {
+      background: #080400;
+      border-top: 1px solid rgba(255,107,0,.1);
+      padding: 60px 60px 36px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: var(--font-display); font-size: 3rem;
+      letter-spacing: 6px; color: var(--saffron);
+      text-shadow: 0 0 30px rgba(255,107,0,.4);
+      margin-bottom: 12px;
+    }
+    .footer-tagline {
+      font-size: .8rem; letter-spacing: 4px; text-transform: uppercase;
+      color: rgba(255,243,224,.35); margin-bottom: 36px;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; }
+    .footer-links a {
+      font-size: .78rem; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,243,224,.5); text-decoration: none; transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--marigold); }
+    .footer-copy { font-size: .72rem; color: rgba(255,243,224,.25); letter-spacing: 1px; }
+
+    /* ── ANIMATIONS ────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── RESPONSIVE ────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      section { padding: 80px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .screenshots-grid { grid-template-columns: 1fr; }
+      .shot-card:nth-child(1),
+      .shot-card:nth-child(4) { grid-column: auto; }
+      .features-grid { grid-template-columns: 1fr; }
+      .github-guide { padding: 28px; }
+      footer { padding: 48px 24px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">GULLY <span>OUTLAWS</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">Story</a></li>
+      <li><a href="#screenshots">Screenshots</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#screenshots" class="btn-primary" style="padding:10px 24px;font-size:.85rem;">Play Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">गली आउटलॉज़ — Mumbai Streets, 1990s</div>
+      <h1 class="hero-title">
+        GULLY<br>
+        <span class="line2">OUTLAWS</span>
+      </h1>
+      <p class="hero-subtitle">
+        Rule the chawls. Own the streets. Every gully has a king — 
+        are you ready to wear the crown?
+      </p>
+      <div class="hero-cta-group">
+        <a href="#screenshots" class="btn-primary">SCREENSHOTS</a>
+        <a href="#about" class="btn-secondary">THE STORY</a>
+      </div>
+      <div class="hero-badges">
+        <div class="badge">Open World</div>
+        <div class="badge">Mumbai Streets</div>
+        <div class="badge">Street Combat</div>
+        <div class="badge">Original Soundtrack</div>
+        <div class="badge">Hindi Dialogue</div>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="section-label">The Story</span>
+        <h2 class="section-title">FROM THE <span>CHAWL</span><br>TO THE TOP</h2>
+        <div class="divider"></div>
+        <p>
+          Set in the raw, electric streets of <strong>1990s Mumbai</strong>, Gully Outlaws drops you into the shoes of Raju — a small-time street kid from Dharavi with nothing but nerve and a dream.
+        </p>
+        <p>
+          Navigate the <strong>labyrinthine gullies</strong>, forge alliances with rival gangs, bribe corrupt constables, and climb the underworld ladder one chai-stall deal at a time.
+        </p>
+        <p>
+          Every decision echoes. Every gully has a memory. Will you become a <strong>legend</strong> — or just another ghost of the streets?
+        </p>
+        <div class="about-features">
+          <div class="feature-row">
+            <div class="feature-icon">🏙️</div>
+            <div>
+              <h4>Living Mumbai</h4>
+              <p>A hand-crafted recreation of 90s Bombay — local trains, vada pav stalls, monsoon floods, and Ganesh utsav processions.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">⚔️</div>
+            <div>
+              <h4>Street Combat System</h4>
+              <p>Fluid brawling inspired by real desi fighting styles — belt swings, bamboo sticks, and raw knuckle action.</p>
+            </div>
+          </div>
+          <div class="feature-row">
+            <div class="feature-icon">🎵</div>
+            <div>
+              <h4>Original Desi Soundtrack</h4>
+              <p>From tapori beats to atmospheric bhajan remixes — music that breathes the city's soul.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-art">
+          <div class="art-glyph">ग</div>
+          <div class="art-label">GULLY OUTLAWS</div>
+          <div class="art-sub">RULE THE STREETS • 1990s MUMBAI</div>
+          <span class="corner-ornament tl">❖</span>
+          <span class="corner-ornament tr">❖</span>
+          <span class="corner-ornament bl">❖</span>
+          <span class="corner-ornament br">❖</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section id="screenshots">
+    <div class="screenshots-header">
+      <span class="section-label">In-Game Screenshots</span>
+      <h2 class="section-title">SEE THE <span>STREETS</span></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="screenshots-grid">
+
+      <!-- SHOT 1 (wide) -->
+      <div class="shot-card">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">🌆</div>
+          <div class="placeholder-label">screenshot_01.jpg</div>
+          <div class="placeholder-sub">Replace with your actual screenshot</div>
+          <span class="replace-badge">Replace</span>
+        </div>
+        <div class="shot-info">
+          <div class="shot-num">Screenshot 01</div>
+          <div class="shot-title">THE DHARAVI HORIZON</div>
+          <p class="shot-desc">
+            The game opens with a sweeping golden-hour vista over Dharavi's rooftops — a sea of 
+            terracotta tiles, fluttering kites, and distant chimney smoke. This establishing shot 
+            immediately grounds the player in the gritty-yet-beautiful world of the game, showing 
+            the sheer scale of the open-world map that awaits exploration.
+          </p>
+          <div class="shot-tags">
+            <span class="shot-tag">Open World</span>
+            <span class="shot-tag">Dharavi</span>
+            <span class="shot-tag">Golden Hour</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOT 2 -->
+      <div class="shot-card">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">🌿</div>
+          <div class="placeholder-label">screenshot_02.jpg</div>
+          <div class="placeholder-sub">Replace with your actual screenshot</div>
+          <span class="replace-badge">Replace</span>
+        </div>
+        <div class="shot-info">
+          <div class="shot-num">Screenshot 02</div>
+          <div class="shot-title">MONSOON GULLY CHASE</div>
+          <p class="shot-desc">
+            Mid-monsoon foot chase through a flooded narrow gully. Rain hammers the cobblestones 
+            as Raju sprints past overflowing drains and vendors hastily packing their stalls. 
+            The dynamic weather system dramatically changes visibility, NPC behaviour, and 
+            terrain traversal.
+          </p>
+          <div class="shot-tags">
+            <span class="shot-tag">Gameplay</span>
+            <span class="shot-tag">Chase</span>
+            <span class="shot-tag">Weather</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOT 3 -->
+      <div class="shot-card">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">🚂</div>
+          <div class="placeholder-label">screenshot_03.jpg</div>
+          <div class="placeholder-sub">Replace with your actual screenshot</div>
+          <span class="replace-badge">Replace</span>
+        </div>
+        <div class="shot-info">
+          <div class="shot-num">Screenshot 03</div>
+          <div class="shot-title">LOCAL TRAIN HEIST</div>
+          <p class="shot-desc">
+            One of the game's signature missions — a high-stakes heist aboard a packed Mumbai 
+            local train. Players must pickpocket, eavesdrop on rival gang members, and leap between 
+            carriages without tipping off the TTE. The packed compartments are fully interactive.
+          </p>
+          <div class="shot-tags">
+            <span class="shot-tag">Mission</span>
+            <span class="shot-tag">Stealth</span>
+            <span class="shot-tag">Local Train</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOT 4 (wide) -->
+      <div class="shot-card">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">⚔️</div>
+          <div class="placeholder-label">screenshot_04.jpg</div>
+          <div class="placeholder-sub">Replace with your actual screenshot</div>
+          <span class="replace-badge">Replace</span>
+        </div>
+        <div class="shot-info">
+          <div class="shot-num">Screenshot 04</div>
+          <div class="shot-title">CHOWK BRAWL — GANG TERRITORY</div>
+          <p class="shot-desc">
+            An all-out gang brawl erupting at the neighbourhood chowk during Dussehra night. 
+            Effigies burn in the background as Raju trades blows with rival Patil gang members. 
+            The combat system blends improvised street weapons — cycle chains, iron rods, 
+            sandals — with grapple moves unique to each character class. AI enemies react 
+            dynamically to crowd, terrain, and noise level.
+          </p>
+          <div class="shot-tags">
+            <span class="shot-tag">Combat</span>
+            <span class="shot-tag">Gang War</span>
+            <span class="shot-tag">Dussehra</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOT 5 -->
+      <div class="shot-card">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">🍵</div>
+          <div class="placeholder-label">screenshot_05.jpg</div>
+          <div class="placeholder-sub">Replace with your actual screenshot</div>
+          <span class="replace-badge">Replace</span>
+        </div>
+        <div class="shot-info">
+          <div class="shot-num">Screenshot 05</div>
+          <div class="shot-title">CHAI STALL — SAFE HOUSE HUB</div>
+          <p class="shot-desc">
+            The iconic chai tapri operated by Masterji doubles as the player's upgrade hub. 
+            Swap weapons, receive mission briefings, and bribe local informants — all over 
+            a steaming glass of cutting chai. The warm amber lighting and hand-painted 
+            signage create an atmosphere of cosy criminality.
+          </p>
+          <div class="shot-tags">
+            <span class="shot-tag">Hub</span>
+            <span class="shot-tag">Upgrades</span>
+            <span class="shot-tag">NPCs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOT 6 -->
+      <div class="shot-card">
+        <div class="shot-placeholder">
+          <div class="placeholder-icon">🌙</div>
+          <div class="placeholder-label">screenshot_06.jpg</div>
+          <div class="placeholder-sub">Replace with your actual screenshot</div>
+          <span class="replace-badge">Replace</span>
+        </div>
+        <div class="shot-info">
+          <div class="shot-num">Screenshot 06</div>
+          <div class="shot-title">MIDNIGHT AT MARINE DRIVE</div>
+          <p class="shot-desc">
+            A cinematic, story-beat moment — Raju stands alone at the Queen's Necklace at 
+            2 AM, the Arabian Sea crashing against the promenade. This reflective cutscene 
+            marks a turning point in the narrative, accompanied by a haunting harmonica 
+            arrangement of a classic Bollywood melody. A rare moment of stillness in a 
+            game defined by chaos.
+          </p>
+          <div class="shot-tags">
+            <span class="shot-tag">Cinematic</span>
+            <span class="shot-tag">Story</span>
+            <span class="shot-tag">Marine Drive</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- GITHUB GUIDE -->
+    <div class="github-guide">
+      <h3>📸 HOW TO ADD YOUR REAL SCREENSHOTS</h3>
+      <p class="guide-sub">After hosting on GitHub Pages — follow these 5 steps</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h4>ADD YOUR IMAGES TO THE REPO</h4>
+            <p>Create an <code>images/</code> folder in the root of your GitHub repo and drop your screenshots in — name them <code>screenshot_01.jpg</code>, <code>screenshot_02.jpg</code>, etc. (or any name you like).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h4>REPLACE THE PLACEHOLDER DIV WITH AN &lt;img&gt; TAG</h4>
+            <p>In <code>index.html</code>, find each <code>&lt;div class="shot-placeholder"&gt;</code> block and replace it with:<br/>
+            <code>&lt;img src="images/screenshot_01.jpg" alt="Dharavi Horizon" style="width:100%;display:block;" /&gt;</code></p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h4>COMMIT AND PUSH</h4>
+            <p>Save the file, then in your terminal:</p>
+            <code>git add .
+git commit -m "Add real screenshots"
+git push origin main</code>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h4>ENABLE GITHUB PAGES</h4>
+            <p>Go to your repo → <strong>Settings → Pages</strong> → under "Source" select <strong>main</strong> branch, folder <strong>/ (root)</strong> → click Save. GitHub will give you a live URL like <code>https://yourusername.github.io/gully-outlaws/</code></p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <h4>WAIT ~60 SECONDS & VISIT YOUR SITE</h4>
+            <p>GitHub Pages takes about a minute to deploy after the first push. Refresh the provided URL and your full site — screenshots included — will be live for the world to see.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="features-header">
+      <span class="section-label">Game Features</span>
+      <h2 class="section-title">WHAT MAKES THE <span>GULLY</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feat-tile">
+        <span class="feat-emoji">🗺️</span>
+        <h3>OPEN WORLD MUMBAI</h3>
+        <p>35 sq km of hand-crafted 90s Bombay — from Dharavi slums to Malabar Hill bungalows. Every gully, every staircase, every rooftop is explorable.</p>
+        <span class="feat-num">01</span>
+      </div>
+      <div class="feat-tile">
+        <span class="feat-emoji">👊</span>
+        <h3>TAPORI COMBAT</h3>
+        <p>A fluid, physics-based brawl system inspired by real street fighting. Improvised weapons, environmental takedowns, and desi wrestling moves.</p>
+        <span class="feat-num">02</span>
+      </div>
+      <div class="feat-tile">
+        <span class="feat-emoji">🎭</span>
+        <h3>BRANCHING STORY</h3>
+        <p>60+ hours of narrative with 4 major endings. Your choices ripple through the chawl — alliances form, betrayals sting, and the streets remember.</p>
+        <span class="feat-num">03</span>
+      </div>
+      <div class="feat-tile">
+        <span class="feat-emoji">🌧️</span>
+        <h3>DYNAMIC WEATHER</h3>
+        <p>Mumbai's legendary monsoon is a game mechanic. Rain floods shortcuts, cops take shelter, and rival gangs use the downpour to settle scores.</p>
+        <span class="feat-num">04</span>
+      </div>
+      <div class="feat-tile">
+        <span class="feat-emoji">🎵</span>
+        <h3>DESI OST</h3>
+        <p>80-track original soundtrack — tapori hip-hop, qawwali basslines, Bollywood-noir strings, and local folk percussion that shifts with the time of day.</p>
+        <span class="feat-num">05</span>
+      </div>
+      <div class="feat-tile">
+        <span class="feat-emoji">🤝</span>
+        <h3>GANG SYSTEM</h3>
+        <p>Build your own crew. Recruit characters from the streets, assign roles, and manage loyalty. Every gang member has a backstory, a weakness, and ambitions of their own.</p>
+        <span class="feat-num">06</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">GULLY OUTLAWS</div>
+    <div class="footer-tagline">Rule the Chawl. Own the Streets. Write Your Legend.</div>
+    <div class="footer-links">
+      <a href="#hero">Home</a>
+      <a href="#about">Story</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#features">Features</a>
+    </div>
+    <p class="footer-copy">© 2026 Gully Outlaws. Made with ❤️ &amp; 🌶️ in Mumbai.</p>
+  </footer>
+
+</body>
+</html>
